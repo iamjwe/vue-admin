@@ -49,7 +49,7 @@
     </el-col>
 
     <!--编辑界面-->
-    <el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
+    <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
       <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
         <el-form-item label="姓名" prop="name">
           <el-input v-model="editForm.name" auto-complete="off"></el-input>
@@ -77,7 +77,7 @@
     </el-dialog>
 
     <!--新增界面-->
-    <el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
+    <el-dialog title="新增" :visible.sync="addFormVisible" :close-on-click-modal="false">
       <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
         <el-form-item label="姓名" prop="name">
           <el-input v-model="addForm.name" auto-complete="off"></el-input>
@@ -108,7 +108,6 @@
 
 <script>
 import util from '../../common/js/util'
-// import NProgress from 'nprogress'
 import { getUserListPage, removeUser, batchRemoveUser, editUser, addUser } from '../../api/api'
 
 export default {
@@ -186,11 +185,9 @@ export default {
         type: 'warning'
       }).then(() => {
         this.listLoading = true
-        // NProgress.start();
         let para = { id: row.id }
         removeUser(para).then((res) => {
           this.listLoading = false
-          // NProgress.done();
           this.$message({
             message: '删除成功',
             type: 'success'
@@ -223,12 +220,10 @@ export default {
         if (valid) {
           this.$confirm('确认提交吗？', '提示', {}).then(() => {
             this.editLoading = true
-            // NProgress.start();
             let para = Object.assign({}, this.editForm)
             para.birth = (!para.birth || para.birth === '') ? '' : util.formatDate.format(new Date(para.birth), 'yyyy-MM-dd')
             editUser(para).then((res) => {
               this.editLoading = false
-              // NProgress.done();
               this.$message({
                 message: '提交成功',
                 type: 'success'
